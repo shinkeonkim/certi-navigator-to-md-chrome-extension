@@ -3,9 +3,11 @@
     let md = '';
 
     // 1. Extract Question
-    const questionEl = document.querySelector('h1.text-lg.font-semibold') || document.querySelector('h1.text-lg.font-medium') || document.querySelector('h1.text-lg');
+    const questionEl =
+      document.querySelector('h1.text-lg.font-semibold') ||
+      document.querySelector('h1.text-lg.font-medium') ||
+      document.querySelector('h1.text-lg');
     if (!questionEl) {
-      alert("문제 제목을 찾을 수 없습니다.");
       return null;
     }
     const questionText = questionEl.innerText.trim();
@@ -22,7 +24,9 @@
     }
 
     // 3. Extract Answer & Explanation (if they exist)
-    const answerEl = Array.from(document.querySelectorAll('h2.text-md.font-semibold')).find(el => el.innerText.includes('정답:')); // From a-2.html
+    const answerEl = Array.from(
+      document.querySelectorAll('h2.text-md.font-semibold')
+    ).find(el => el.innerText.includes('정답:'));
     if (answerEl) {
       md += `## Answer\n\n${answerEl.innerText.trim()}\n\n`;
 
@@ -30,7 +34,9 @@
       const explanationContainer = answerEl.parentElement;
       if (explanationContainer) {
         // all siblings of the answer element that are <p>
-        const pTags = Array.from(explanationContainer.querySelectorAll('p.text-md.text-gray-700'));
+        const pTags = Array.from(
+          explanationContainer.querySelectorAll('p.text-md.text-gray-700')
+        );
         if (pTags.length > 0) {
           md += `## Explanation\n\n`;
           pTags.forEach(p => {
@@ -43,28 +49,5 @@
     return { markdown: md, title: questionText };
   }
 
-  const result = formatMarkdown();
-  
-  if (result) {
-    // Sanitize title for filename
-    const maxFilenameLen = 30;
-    let safeTitle = result.title.split('\\n')[0].replace(/[/\\\\?%*:|"<>]/g, '-').trim();
-    if (safeTitle.length > maxFilenameLen) {
-      safeTitle = safeTitle.substring(0, maxFilenameLen) + '...';
-    }
-    const filename = `${safeTitle}.md`;
-
-    // Create a Blob and Download
-    const blob = new Blob([result.markdown], { type: 'text/markdown;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    
-    URL.revokeObjectURL(url);
-  }
+  return formatMarkdown();
 })();

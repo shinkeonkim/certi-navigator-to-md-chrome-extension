@@ -1,11 +1,12 @@
 {
   "manifest_version": 3,
   "name": "Certi to Markdown",
-  "version": "1.0",
-  "description": "Extracts problem details from certi.nxtcloud.kr and downloads them as a Markdown file.",
+  "version": "1.1",
+  "description": "Extracts problem details from certi.nxtcloud.kr and downloads them as a Markdown file or copies them to the clipboard.",
   "permissions": [
     "activeTab",
-    "scripting"
+    "scripting",
+    "clipboardWrite"
   ],
   "action": {
     "default_popup": "popup/popup.html"
